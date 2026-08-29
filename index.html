@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070707">
+  <meta name="description" content="ZA Diagnostics — mobile vehicle diagnostics, coding and fault finding in Oxford and surrounding areas.">
+  <title>ZA Diagnostics | Mobile Vehicle Diagnostics</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=2">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon.png?v=2">
+  <link rel="apple-touch-icon" href="favicon.png?v=2">
+
+  <style>
+    :root{
+      --bg:#060606;
+      --panel:#0d0e0e;
+      --panel2:#121313;
+      --text:#f4f4f1;
+      --muted:#a6a9a5;
+      --line:#242624;
+      --green:#8cff00;
+      --green2:#b2ff52;
+      --shadow:0 18px 55px rgba(0,0,0,.35);
+      --radius:22px;
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(140,255,0,.055), transparent 28rem),
+        var(--bg);
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height:1.55;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    button,input,textarea{font:inherit}
+    .container{width:min(calc(100% - 36px),var(--max));margin:auto}
+    .small{font-size:.9rem;color:var(--muted)}
+    .kicker{
+      color:var(--green);
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.75rem;
+      font-weight:800;
+    }
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:30px;
+      align-items:end;
+      margin-bottom:34px;
+    }
+    h1,h2,h3,p{margin-top:0}
+    h1{
+      font-size:clamp(3rem,7vw,6.6rem);
+      line-height:.94;
+      letter-spacing:-.055em;
+      max-width:850px;
+      margin:15px 0 24px;
+    }
+    h2{
+      font-size:clamp(2rem,4vw,3.5rem);
+      line-height:1;
+      letter-spacing:-.04em;
+      margin:10px 0;
+    }
+    h2 span{color:var(--green)}
+    h3{line-height:1.1}
+    .sub{color:var(--muted);max-width:620px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:48px;
+      padding:12px 18px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-weight:800;
+      transition:.2s ease;
+      cursor:pointer;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn.primary{background:var(--green);color:#071000;border-color:var(--green)}
+    .btn.secondary{background:#101111}
+    .actions{display:flex;flex-wrap:wrap;gap:12px}
+    .tag{
+      display:inline-flex;
+      padding:6px 10px;
+      border:1px solid #3a3d39;
+      border-radius:999px;
+      color:#d9ddd6;
+      font-size:.75rem;
+      font-weight:800;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(16px);
+      background:rgba(6,6,6,.82);
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .nav{
+      min-height:78px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.03em}
+    .brand img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+    .nav-links{display:flex;align-items:center;gap:24px;font-size:.92rem;color:#d8dad5}
+    .nav-links a:hover{color:var(--green)}
+    .nav-cta{background:var(--green);color:#071000;padding:11px 17px;border-radius:999px;font-weight:900}
+    .menu{display:none;background:none;border:0;color:white;font-size:1.7rem;cursor:pointer}
+
+    main{overflow:hidden}
+    section{padding:100px 0;scroll-margin-top:90px}
+    .hero{padding:86px 0 92px}
+    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:55px;align-items:center}
+    .hero p{font-size:1.08rem;color:var(--muted);max-width:650px}
+    .hero-note{margin-top:22px}
+    .hero-card{
+      position:relative;
+      min-height:480px;
+      border:1px solid var(--line);
+      border-radius:30px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:#0b0c0c;
+    }
+    .hero-card img{width:100%;height:100%;min-height:480px;object-fit:cover}
+    .hero-card:after{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.8));
+    }
+    .hero-badge{
+      position:absolute;left:22px;bottom:22px;z-index:2;
+      background:rgba(6,6,6,.82);
+      border:1px solid rgba(255,255,255,.12);
+      padding:14px 16px;border-radius:16px;
+    }
+    .hero-badge strong{display:block;color:var(--green);font-size:1.05rem}
+
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:35px}
+    .stat,.panel{
+      background:linear-gradient(145deg,var(--panel2),var(--panel));
+      border:1px solid var(--line);
+      border-radius:18px;
+    }
+    .stat{padding:20px}
+    .stat strong{display:block;font-size:1.7rem;color:var(--green);margin-bottom:3px}
+    .stat span{font-size:.84rem;color:var(--muted)}
+
+    .service-grid,.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .service,.price{padding:28px;border:1px solid var(--line);border-radius:22px;background:var(--panel)}
+    .service h3,.price h3{font-size:1.3rem;margin:16px 0 9px}
+    .service p,.price li{color:var(--muted)}
+    .icon{
+      width:46px;height:46px;border-radius:14px;
+      display:grid;place-items:center;
+      border:1px solid #364032;
+      background:#10140d;color:var(--green);font-weight:900;
+    }
+    .price.featured{border-color:rgba(140,255,0,.4);box-shadow:0 0 0 1px rgba(140,255,0,.06) inset}
+    .amount{font-size:2.8rem;font-weight:900;letter-spacing:-.04em;margin:10px 0 15px}
+    .price ul{padding-left:19px;margin:0 0 20px}
+    .price li{margin:7px 0}
+    .note{font-size:.8rem;color:#858982}
+
+    .mod-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+    .mod-card{padding:24px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,var(--panel2),var(--panel));transition:.2s ease}
+    .mod-card:hover{transform:translateY(-3px);border-color:rgba(140,255,0,.35)}
+    .mod-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;border:1px solid #364032;background:#10140d;color:var(--green);font-size:1.25rem;font-weight:900}
+    .mod-card h3{font-size:1.12rem;margin:17px 0 8px}
+    .mod-card p{color:var(--muted);font-size:.92rem;margin:0}
+    .mod-note{margin-top:18px;padding:18px 20px;border:1px solid rgba(140,255,0,.2);border-radius:18px;background:rgba(140,255,0,.035);color:#cdd1c9}
+    @media(max-width:1000px){.mod-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:680px){.mod-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:470px){.mod-grid{grid-template-columns:1fr}}
+
+    .extras{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+    .panel{padding:26px}
+    .rows{margin-top:12px}
+    .row{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-bottom:1px solid var(--line)}
+    .row:last-child{border-bottom:0}
+    .row span{color:var(--muted)}
+    .row strong{white-space:nowrap}
+
+    .travel{
+      padding:35px;
+      border:1px solid #2b3027;
+      border-radius:25px;
+      background:radial-gradient(circle at 100% 0%,rgba(140,255,0,.08),transparent 30%),#0b0d0a;
+    }
+    .travel strong{color:white}
+
+    .brand-card{
+      padding:26px;
+      border:1px solid var(--line);
+      border-radius:25px;
+      background:linear-gradient(145deg,#111212,#0a0b0b);
+      margin-bottom:18px;
+    }
+    .brand-card h3{font-size:1.9rem;margin-bottom:7px}
+    .brand-card > p{color:var(--muted);max-width:760px}
+    .brand-meta{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+    .brand-meta span{
+      font-size:.72rem;font-weight:800;color:#d7dad3;
+      border:1px solid #30332f;border-radius:999px;padding:6px 9px;
+    }
+    .work-label{
+      color:var(--green);
+      font-size:.72rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin:22px 0 12px;
+    }
+    .brand-gallery{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:10px;
+    }
+    .brand-gallery img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      border-radius:15px;
+      border:1px solid #262925;
+      background:#111;
+      transition:.2s ease;
+    }
+    .brand-gallery img:hover{transform:scale(1.02);border-color:#4c5149}
+    .brand-card.audi .brand-gallery,
+    .brand-card.golf .brand-gallery{grid-template-columns:repeat(6,1fr)}
+    .brand-card.toyota .brand-gallery{grid-template-columns:repeat(3,1fr);max-width:620px}
+
+    .review-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .review-card{padding:28px;border:1px solid var(--line);border-radius:22px;background:var(--panel)}
+    .review-stars{color:var(--green);letter-spacing:3px;font-size:1.15rem}
+    blockquote{font-size:1.02rem;margin:18px 0;color:#e9ebe7}
+    .review-author{color:var(--muted);font-size:.85rem}
+    .review-cta{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:20px}
+
+    .book{
+      border:1px solid #30342d;
+      border-radius:28px;
+      background:radial-gradient(circle at 100% 0%,rgba(140,255,0,.08),transparent 28%),#0c0e0c;
+      padding:34px;
+    }
+    .book-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px}
+    form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    input,textarea,select{
+      width:100%;border:1px solid #2c302c;background:#080909;color:white;
+      border-radius:14px;padding:14px 15px;outline:none;
+    }
+    input:focus,textarea:focus,select:focus{border-color:#617053}
+    textarea{min-height:130px;resize:vertical;grid-column:1/-1}
+    form .full{grid-column:1/-1}
+    .form-note{font-size:.78rem;color:var(--muted);margin-top:10px}
+
+    footer{padding:42px 0;border-top:1px solid var(--line)}
+    .footer-grid{display:flex;justify-content:space-between;gap:30px;align-items:flex-start}
+    .socials{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+    .socials a{padding:8px 11px;border:1px solid var(--line);border-radius:999px;color:#c9ccc6;font-size:.82rem}
+    .socials a:hover{color:var(--green);border-color:#46513e}
+
+    @media(max-width:900px){
+      .hero-grid,.book-grid{grid-template-columns:1fr}
+      .service-grid,.price-grid{grid-template-columns:1fr}
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .section-head{display:block}
+      .brand-gallery,.brand-card.audi .brand-gallery,.brand-card.golf .brand-gallery{grid-template-columns:repeat(3,1fr)}
+      .review-grid,.extras{grid-template-columns:1fr}
+      .nav-links{display:none;position:absolute;left:18px;right:18px;top:70px;padding:16px;background:#0b0c0c;border:1px solid var(--line);border-radius:18px;flex-direction:column;align-items:stretch}
+      .nav-links.open{display:flex}
+      .nav-links a{padding:9px 4px}
+      .menu{display:block}
+    }
+    @media(max-width:560px){
+      .container{width:min(calc(100% - 24px),var(--max))}
+      section{padding:72px 0}
+      .hero{padding-top:58px}
+      h1{font-size:3.35rem}
+      .hero-card,.hero-card img{min-height:370px}
+      .stats{grid-template-columns:1fr 1fr}
+      .stat{padding:15px}
+      .brand-gallery,.brand-card.audi .brand-gallery,.brand-card.golf .brand-gallery{grid-template-columns:repeat(2,1fr)}
+      .brand-card.toyota .brand-gallery{grid-template-columns:repeat(3,1fr)}
+      form{grid-template-columns:1fr}
+      form .full,textarea{grid-column:1}
+      .review-cta,.footer-grid{display:block}
+      .review-cta .btn{margin-top:12px}
+      .socials{justify-content:flex-start;margin-top:18px}
+      .book{padding:23px}
+    }
+  </style>
+</head>
+
+<body id="top">
+<header>
+  <div class="container nav">
+    <a class="brand" href="#top" aria-label="ZA Diagnostics home">
+      <img src="assets/logo.png" alt="ZA Diagnostics logo">
+      <span>ZA DIAGNOSTICS</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#brands">Brands &amp; Work</a>
+      <a href="#modifications">Modifications</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#book">Book</a>
+      <a class="nav-cta" href="https://wa.me/447404644438?text=Hi%20ZA%20Diagnostics%2C%20I'd%20like%20to%20book%20a%20diagnostic%20appointment." target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
+    <button class="menu" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="kicker">Mobile vehicle diagnostics • Oxford &amp; surrounding areas</div>
+        <h1>Diagnostics that tell you <span style="color:var(--green)">what's wrong.</span></h1>
+        <p>
+          Professional mobile diagnostics, fault finding, coding and vehicle health checks.
+          We come to you and explain the results clearly.
+        </p>
+        <div class="actions" style="margin-top:25px">
+          <a class="btn primary" href="#book">Book an appointment →</a>
+          <a class="btn secondary" href="tel:07404644438">Call 07404 644438</a>
+          <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=ZA+Diagnostics%2C+Oxford%2C+Oxfordshire" target="_blank" rel="noopener">Google Maps</a>
+        </div>
+        <div class="hero-note small">BMW • Audi • Volkswagen / Golf • Mercedes-Benz • Toyota</div>
+      </div>
+
+      <div class="hero-card">
+        <img src="assets/mercedes-diagnostic-1.jpeg" alt="ZA Diagnostics working on a Mercedes" loading="eager">
+        <div class="hero-badge">
+          <strong>Mobile service</strong>
+          Fast • Reliable • Professional
+        </div>
+      </div>
+    </div>
+
+    <div class="container stats">
+      <div class="stat"><strong>£20</strong><span>Basic fault scan</span></div>
+      <div class="stat"><strong>£35</strong><span>Advanced diagnostic</span></div>
+      <div class="stat"><strong>£50</strong><span>Premium diagnostic</span></div>
+      <div class="stat"><strong>5+</strong><span>Featured manufacturers</span></div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <div><div class="kicker">What we do</div><h2>Real diagnostics. <span>No guessing.</span></h2></div>
+        <p class="sub">Mobile vehicle diagnostics and coding with clear explanations of what the scan actually means.</p>
+      </div>
+
+      <div class="service-grid">
+        <article class="service"><div class="icon">⌁</div><h3>Fault Finding</h3><p>Read and investigate fault codes across supported vehicle control modules and systems.</p></article>
+        <article class="service"><div class="icon">✓</div><h3>Vehicle Diagnostics</h3><p>Full-system scans, health checks, live data and diagnostic reports where supported.</p></article>
+        <article class="service"><div class="icon">⚙</div><h3>Coding &amp; Configuration</h3><p>Supported coding, adaptations and customisation for eligible vehicles and modules.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <div><div class="kicker">Simple pricing</div><h2>Pick the level <span>you need.</span></h2></div>
+        <p class="sub">Travel outside Oxford may add a charge. You will be told the travel cost before booking.</p>
+      </div>
+
+      <div class="price-grid">
+        <article class="price">
+          <span class="tag">Basic</span>
+          <h3>Basic Fault Scan</h3>
+          <div class="amount">£20</div>
+          <ul>
+            <li>Read &amp; clear fault codes</li>
+            <li>Basic fault scan</li>
+            <li>Identify obvious faults</li>
+            <li>Basic vehicle health check</li>
+            <li>10-minute explanation</li>
+          </ul>
+          <div class="note">Basic scan only. In-depth fault finding is not included.</div>
+        </article>
+
+        <article class="price featured">
+          <span class="tag">Most popular</span>
+          <h3>Advanced Diagnostic</h3>
+          <div class="amount">£35</div>
+          <ul>
+            <li>Full-system diagnostic scan</li>
+            <li>Read &amp; clear fault codes</li>
+            <li>Live data monitoring</li>
+            <li>Vehicle health report</li>
+            <li>Battery registration included</li>
+            <li>Service reset if required</li>
+            <li>Up to 15 coding changes*</li>
+            <li>15-minute explanation</li>
+          </ul>
+        </article>
+
+        <article class="price">
+          <span class="tag">Maximum control</span>
+          <h3>Premium Diagnostic</h3>
+          <div class="amount">£50</div>
+          <ul>
+            <li>Full-system diagnostic scan</li>
+            <li>Read &amp; clear fault codes</li>
+            <li>Live data monitoring</li>
+            <li>Detailed vehicle health report</li>
+            <li>Battery registration included</li>
+            <li>Service reset if required</li>
+            <li>Up to 30+ coding changes*</li>
+            <li>Coding &amp; configuration where supported</li>
+            <li>Lighting/display customisation where supported</li>
+            <li>Driver assistance settings where supported</li>
+            <li>Drive/instrument cluster tweaks where supported</li>
+            <li>Hidden features where supported</li>
+            <li>20-minute explanation</li>
+            <li>Priority support</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="extras">
+        <div class="panel">
+          <div class="kicker">Extras &amp; add-ons</div>
+          <div class="rows">
+            <div class="row"><span>Additional coding changes</span><strong>£2 each</strong></div>
+            <div class="row"><span>DPF regeneration (if supported)</span><strong>£20</strong></div>
+            <div class="row"><span>Injector coding (if supported)</span><strong>£20</strong></div>
+            <div class="row"><span>Basic adaptations &amp; settings</span><strong>£15</strong></div>
+            <div class="row"><span>Comfort / module adaptations</span><strong>£20</strong></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="kicker">Battery services</div>
+          <div class="rows">
+            <div class="row"><span>Battery replacement (fitted &amp; tested)</span><strong>£15</strong></div>
+            <div class="row"><span>Battery registration</span><strong>£12.50</strong></div>
+            <div class="row"><span>Battery replacement + registration</span><strong>£30</strong></div>
+          </div>
+        </div>
+      </div>
+      <p class="note" style="margin-top:14px">* Coding and configuration options depend on the vehicle, manufacturer, year and specification.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="travel">
+        <div class="kicker">Travel charges • outside Oxford</div>
+        <h2 style="margin-top:10px">We come to you.</h2>
+        <p style="color:var(--muted);margin-bottom:0">
+          0–5 miles: <strong>No travel charge.</strong><br>
+          Over 5 miles: a travel charge applies, calculated from our base location. You will be informed of the travel cost before booking.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="modifications">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Additional services</div>
+          <h2>Vehicle modifications <span>&amp; upgrades.</span></h2>
+        </div>
+        <p class="sub">Alongside diagnostics and coding, ZA Diagnostics also offers professional fitting of selected vehicle upgrades and styling enhancements.</p>
+      </div>
+
+      <div class="mod-grid">
+        <article class="mod-card">
+          <div class="mod-icon">◉</div>
+          <h3>Puddle / Door Projector Lights</h3>
+          <p>Premium logo projector lights professionally installed for a sharper entrance look.</p>
+        </article>
+        <article class="mod-card">
+          <div class="mod-icon">▣</div>
+          <h3>LED Number Plate Lights</h3>
+          <p>Upgrade to brighter, sharper LED number plate lighting on compatible vehicles.</p>
+        </article>
+        <article class="mod-card">
+          <div class="mod-icon">⌁</div>
+          <h3>Footwell Lighting Kits</h3>
+          <p>Add custom footwell and interior ambient lighting for a more personalised cabin.</p>
+        </article>
+        <article class="mod-card">
+          <div class="mod-icon">◇</div>
+          <h3>Mirror Cap Installation</h3>
+          <p>Upgrade your vehicle with compatible replacement or styling mirror caps.</p>
+        </article>
+        <article class="mod-card">
+          <div class="mod-icon">━</div>
+          <h3>Spoiler Supply &amp; Fitting</h3>
+          <p>High-quality spoilers supplied and professionally fitted for the finished look.</p>
+        </article>
+      </div>
+
+      <div class="mod-note">
+        <strong>Professional fitting.</strong> Product compatibility is checked before fitting. Ask ZA Diagnostics about your vehicle and the upgrade you have in mind.
+      </div>
+    </div>
+  </section>
+
+  <!-- ONE clean portfolio section. No duplicate gallery. -->
+  <section id="brands">
+    <div class="container">
+      <div class="section-head">
+        <div><div class="kicker">Real work</div><h2>Our work by <span>manufacturer.</span></h2></div>
+        <p class="sub">Actual ZA Diagnostics photos, grouped correctly so customers can see the vehicles and diagnostic work we cover.</p>
+      </div>
+
+      <article class="brand-card">
+        <h3>BMW</h3>
+        <p>Diagnostics • Coding • Fault Finding • Adaptations</p>
+        <div class="brand-meta"><span>BMW</span><span>Diagnostics</span><span>Coding</span><span>Live Data</span></div>
+        <div class="work-label">BMW work</div>
+        <div class="brand-gallery">
+          <img src="assets/bmw-diagnostic-1.jpg" alt="BMW diagnostic work 1" loading="lazy">
+          <img src="assets/bmw-diagnostic-2.jpg" alt="BMW diagnostic work 2" loading="lazy">
+          <img src="assets/bmw-diagnostic-3.jpg" alt="BMW diagnostic work 3" loading="lazy">
+          <img src="assets/bmw-diagnostic-4.jpg" alt="BMW diagnostic work 4" loading="lazy">
+          <img src="assets/bmw-diagnostic-5.jpg" alt="BMW diagnostic work 5" loading="lazy">
+        </div>
+      </article>
+
+      <article class="brand-card">
+        <h3>Mercedes-Benz</h3>
+        <p>Diagnostics • Coding • Electrical Fault Finding</p>
+        <div class="brand-meta"><span>Mercedes-Benz</span><span>Diagnostics</span><span>Electrical</span></div>
+        <div class="work-label">Mercedes-Benz work</div>
+        <div class="brand-gallery">
+          <img src="assets/mercedes-diagnostic-1.jpeg" alt="Mercedes-Benz diagnostic work 1" loading="lazy">
+          <img src="assets/mercedes-diagnostic-2.jpeg" alt="Mercedes-Benz diagnostic work 2" loading="lazy">
+          <img src="assets/mercedes-diagnostic-3.jpeg" alt="Mercedes-Benz diagnostic work 3" loading="lazy">
+          <img src="assets/mercedes-diagnostic-4.jpeg" alt="Mercedes-Benz diagnostic work 4" loading="lazy">
+        </div>
+      </article>
+
+      <article class="brand-card audi">
+        <h3>Audi</h3>
+        <p>Diagnostics • Coding • Configuration</p>
+        <div class="brand-meta"><span>Audi</span><span>Diagnostics</span><span>Coding</span><span>VAG</span></div>
+        <div class="work-label">Audi work</div>
+        <div class="brand-gallery">
+          <img src="assets/audi-1.jpeg" alt="Audi diagnostic work 1" loading="lazy">
+          <img src="assets/audi-2.jpeg" alt="Audi diagnostic work 2" loading="lazy">
+          <img src="assets/audi-3.jpeg" alt="Audi diagnostic work 3" loading="lazy">
+          <img src="assets/audi-4.jpeg" alt="Audi diagnostic work 4" loading="lazy">
+          <img src="assets/audi-5.jpeg" alt="Audi diagnostic work 5" loading="lazy">
+          <img src="assets/audi-6.jpeg" alt="Audi diagnostic work 6" loading="lazy">
+        </div>
+      </article>
+
+      <article class="brand-card toyota">
+        <h3>Toyota</h3>
+        <p>Diagnostics • Electrical • Hybrid where supported</p>
+        <div class="brand-meta"><span>Toyota</span><span>Diagnostics</span><span>Electrical</span></div>
+        <div class="work-label">Toyota work</div>
+        <div class="brand-gallery">
+          <img src="assets/toyota-1.jpeg" alt="Toyota diagnostic work 1" loading="lazy">
+          <img src="assets/toyota-2.jpeg" alt="Toyota diagnostic work 2" loading="lazy">
+          <img src="assets/toyota-3.jpeg" alt="Toyota diagnostic work 3" loading="lazy">
+        </div>
+      </article>
+
+      <article class="brand-card golf">
+        <h3>Volkswagen / Golf</h3>
+        <p>Diagnostics • Fault Finding • Coding</p>
+        <div class="brand-meta"><span>Volkswagen</span><span>Golf</span><span>VAG</span></div>
+        <div class="work-label">Volkswagen / Golf work</div>
+        <div class="brand-gallery">
+          <img src="assets/IMG_6275.jpeg" alt="Volkswagen Golf diagnostic work 1" loading="lazy">
+          <img src="assets/IMG_6276.jpeg" alt="Volkswagen Golf diagnostic work 2" loading="lazy">
+          <img src="assets/IMG_6277.jpeg" alt="Volkswagen Golf diagnostic work 3" loading="lazy">
+          <img src="assets/IMG_6278.jpeg" alt="Volkswagen Golf diagnostic work 4" loading="lazy">
+          <img src="assets/IMG_6279.jpeg" alt="Volkswagen Golf diagnostic work 5" loading="lazy">
+          <img src="assets/IMG_6280.jpeg" alt="Volkswagen Golf diagnostic work 6" loading="lazy">
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="container">
+      <div class="section-head">
+        <div><div class="kicker">Customer feedback</div><h2>What customers <span>say.</span></h2></div>
+        <p class="sub">Real Google reviews from ZA Diagnostics customers.</p>
+      </div>
+
+      <div class="review-grid">
+        <article class="review-card">
+          <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <blockquote>“Really happy with the service really good explanation and checking”</blockquote>
+          <div class="review-author">— Gabriel Veselinov · Google review</div>
+        </article>
+        <article class="review-card">
+          <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <blockquote>“Excellent service from ZA Diagnostic. They were professional, knowledgeable, and quickly identified the issue with my vehicle. They explained everything clearly without any pressure and got the job done efficiently.”</blockquote>
+          <div class="review-author">— dk · Google review</div>
+        </article>
+      </div>
+
+      <div class="review-cta">
+        <span class="small">Want to see more? Check the Google Business profile.</span>
+        <a class="btn secondary" href="https://share.google/frBtdRkS4X0PQbZmR" target="_blank" rel="noopener">View Google reviews →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="book">
+    <div class="container">
+      <div class="book">
+        <div class="book-grid">
+          <div>
+            <div class="kicker">Book a mobile appointment</div>
+            <h2>Tell us what the <span>car needs.</span></h2>
+            <p class="sub">Fill this in and the details will be prepared in WhatsApp for you to send directly to ZA Diagnostics.</p>
+            <div class="actions">
+              <a class="btn secondary" href="tel:07404644438">Call 07404 644438</a>
+              <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=ZA+Diagnostics%2C+Oxford%2C+Oxfordshire" target="_blank" rel="noopener">Google Maps</a>
+            </div>
+            <p class="small" style="margin-top:18px">We'll confirm the appointment and any applicable travel charge before the visit.</p>
+          </div>
+
+          <div>
+            <form id="bookingForm">
+              <input id="name" name="name" placeholder="Your name" autocomplete="name" required>
+              <input id="phone" name="phone" type="tel" placeholder="Your phone number" autocomplete="tel" required>
+              <input id="vehicle" name="vehicle" placeholder="Vehicle (e.g. Audi A5 2.0 TDI)" required>
+              <input id="registration" name="registration" placeholder="Registration (optional)" autocomplete="off">
+              <select id="service" name="service" class="full">
+                <option value="Basic Fault Scan — £20">Basic Fault Scan — £20</option>
+                <option value="Advanced Diagnostic — £35" selected>Advanced Diagnostic — £35</option>
+                <option value="Premium Diagnostic — £50">Premium Diagnostic — £50</option>
+                <option value="Vehicle Modification / Upgrade">Vehicle Modification / Upgrade</option>
+                <option value="Not sure / need advice">Not sure / need advice</option>
+              </select>
+              <textarea id="message" name="message" placeholder="Describe the issue / what you want checked"></textarea>
+              <button class="btn primary full" type="submit">Continue to WhatsApp →</button>
+            </form>
+            <div class="form-note">Your message is opened in WhatsApp before anything is sent.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <strong>ZA DIAGNOSTICS</strong>
+      <div class="small">Mobile Diagnostics &amp; Coding • Oxford &amp; surrounding areas</div>
+      <div class="small" style="margin-top:8px">07404 644438</div>
+    </div>
+    <div class="socials">
+      <a href="https://www.instagram.com/zadiagnostics_/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@zadiagnostics?lang=en-GB" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.facebook.com/ZADiagnostics" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://wa.me/447404644438?text=Hi%20ZA%20Diagnostics%2C%20I'd%20like%20to%20book%20a%20diagnostic%20appointment." target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.google.com/maps/search/?api=1&query=ZA+Diagnostics%2C+Oxford%2C+Oxfordshire" target="_blank" rel="noopener">Google Maps</a>
+    </div>
+  </div>
+  <div class="container small" style="margin-top:22px">© <span id="year"></span> ZA Diagnostics. All rights reserved.</div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(open));
+  });
+
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  document.getElementById('bookingForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const vehicle = document.getElementById('vehicle').value.trim();
+    const registration = document.getElementById('registration').value.trim();
+    const service = document.getElementById('service').value;
+    const message = document.getElementById('message').value.trim();
+
+    const text = [
+      "Hi ZA Diagnostics, I'd like to book a mobile diagnostic appointment.",
+      "",
+      "Name: " + name,
+      "Phone: " + phone,
+      "Vehicle: " + vehicle,
+      registration ? "Registration: " + registration : "",
+      "Service: " + service,
+      message ? "Issue / request: " + message : ""
+    ].filter(Boolean).join("\n");
+
+    window.open("https://wa.me/447404644438?text=" + encodeURIComponent(text), "_blank", "noopener");
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
